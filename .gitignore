@@ -1,0 +1,6 @@
+# Build artifacts
+terminal-notifier
+terminal-notifier.app/
+
+# macOS
+.DS_Store
