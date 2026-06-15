@@ -2,5 +2,8 @@
 terminal-notifier
 terminal-notifier.app/
 
+# Generated at build time
+Version.swift
+
 # macOS
 .DS_Store

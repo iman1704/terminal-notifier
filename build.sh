@@ -1,12 +1,17 @@
 #!/bin/bash
 set -e
 
+VERSION="${1:-dev}"
+
 echo "Creating directory structure..."
 mkdir -p terminal-notifier.app/Contents/MacOS
 mkdir -p terminal-notifier.app/Contents/Resources
 
+echo "Generating version file..."
+echo "let APP_VERSION = \"${VERSION}\"" > Version.swift
+
 echo "Compiling Swift code..."
-swiftc -O -o terminal-notifier.app/Contents/MacOS/terminal-notifier main.swift
+swiftc -O -o terminal-notifier.app/Contents/MacOS/terminal-notifier main.swift Version.swift
 
 echo "Ad-hoc code signing binary..."
 codesign --force --sign - terminal-notifier.app/Contents/MacOS/terminal-notifier

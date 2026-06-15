@@ -27,7 +27,7 @@ jobs:
         run: |
           sed -i '' \
             -e 's|url ".*"|url "'"${TARBALL_URL}"'"|' \
-            -e 's|# sha256 ".*"|sha256 "'"${SHA256}"'"|' \
+            -e 's|sha256 ".*"|sha256 "'"${SHA256}"'"|' \
             -e 's|version ".*"|version "'"${VERSION}"'"|' \
             terminal-notifier.rb
 

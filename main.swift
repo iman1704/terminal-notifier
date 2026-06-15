@@ -285,7 +285,7 @@ if isCLI {
     }
     
     if showVersion {
-        print("2.0.0")
+        print(APP_VERSION)
         exit(0)
     }
     

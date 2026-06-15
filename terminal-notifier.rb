@@ -8,7 +8,7 @@ class TerminalNotifier < Formula
 
   def install
     # Build the application bundle using our build script
-    system "./build.sh"
+    system "./build.sh", version.to_s
 
     # Install the app bundle under the Homebrew libexec folder
     libexec.install "terminal-notifier.app"
@@ -18,6 +18,6 @@ class TerminalNotifier < Formula
   end
 
   test do
-    assert_match "2.0.0", shell_output("#{bin}/terminal-notifier -version")
+    assert_match version.to_s, shell_output("#{bin}/terminal-notifier -version")
   end
 end
