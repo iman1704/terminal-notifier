@@ -29,12 +29,12 @@ jobs:
             -e 's|url ".*"|url "'"${TARBALL_URL}"'"|' \
             -e 's|# sha256 ".*"|sha256 "'"${SHA256}"'"|' \
             -e 's|version ".*"|version "'"${VERSION}"'"|' \
-            Casks/terminal-notifier.rb
+            terminal-notifier.rb
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Casks/terminal-notifier.rb
+          git add terminal-notifier.rb
           git diff --cached --quiet || git commit -m "terminal-notifier ${VERSION}"
           git push
