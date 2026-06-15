@@ -7,6 +7,14 @@ echo "Creating directory structure..."
 mkdir -p terminal-notifier.app/Contents/MacOS
 mkdir -p terminal-notifier.app/Contents/Resources
 
+echo "Copying Info.plist..."
+cp Info.plist terminal-notifier.app/Contents/Info.plist
+
+if [ "$VERSION" != "dev" ]; then
+    plutil -replace CFBundleShortVersionString -string "$VERSION" terminal-notifier.app/Contents/Info.plist
+    plutil -replace CFBundleVersion -string "$VERSION" terminal-notifier.app/Contents/Info.plist
+fi
+
 echo "Generating version file..."
 echo "let APP_VERSION = \"${VERSION}\"" > Version.swift
 
