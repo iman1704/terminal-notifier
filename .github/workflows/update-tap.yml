@@ -1,0 +1,40 @@
+name: Update Homebrew Tap
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  update-tap:
+    runs-on: macos-latest
+    steps:
+      - name: Compute SHA256
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/}"
+          URL="https://github.com/${{ github.repository }}/archive/refs/tags/${VERSION}.tar.gz"
+          SHA256=$(curl -sL "$URL" | shasum -a 256 | cut -d' ' -f1)
+          echo "VERSION=${VERSION#v}" >> $GITHUB_ENV
+          echo "SHA256=${SHA256}" >> $GITHUB_ENV
+          echo "TARBALL_URL=${URL}" >> $GITHUB_ENV
+
+      - name: Checkout tap repo
+        uses: actions/checkout@v4
+        with:
+          repository: iman1704/homebrew-tap
+          token: ${{ secrets.TAP_REPO_TOKEN }}
+
+      - name: Update formula
+        run: |
+          sed -i '' \
+            -e 's|url ".*"|url "'"${TARBALL_URL}"'"|' \
+            -e 's|# sha256 ".*"|sha256 "'"${SHA256}"'"|' \
+            -e 's|version ".*"|version "'"${VERSION}"'"|' \
+            terminal-notifier.rb
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add terminal-notifier.rb
+          git diff --cached --quiet || git commit -m "terminal-notifier ${VERSION}"
+          git push
