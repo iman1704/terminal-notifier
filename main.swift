@@ -224,7 +224,8 @@ func parseArguments() {
     var iterator = args.makeIterator()
     
     while let arg = iterator.next() {
-        switch arg {
+        let normalizedArg = arg.hasPrefix("--") ? String(arg.dropFirst()) : arg
+        switch normalizedArg {
         case "-help", "-h", "--help":
             showHelp = true
         case "-version", "-v", "--version":
@@ -274,6 +275,10 @@ parseArguments()
 let isCLI = CommandLine.arguments.count > 1 || isatty(STDIN_FILENO) == 0
 
 if isCLI {
+    // Initialize NSApplication so UNUserNotificationCenter can resolve the bundle identifier
+    let app = NSApplication.shared
+    app.setActivationPolicy(.prohibited)
+    
     if showHelp {
         print(helpMessage)
         exit(0)
